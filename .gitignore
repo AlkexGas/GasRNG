@@ -1,2 +1,3 @@
 *.exe
+__history/*
 Win32/Debug/*
