@@ -40,13 +40,14 @@ object MainForm: TMainForm
       Width = 130
       Height = 21
       NumbersOnly = True
+      ReadOnly = True
       TabOrder = 0
       Text = '0'
     end
     object GenerateButton: TButton
       Left = 16
       Top = 75
-      Width = 193
+      Width = 97
       Height = 30
       Caption = #1043#1077#1085#1077#1088#1080#1088#1086#1074#1072#1090#1100
       TabOrder = 1
@@ -60,6 +61,14 @@ object MainForm: TMainForm
       NumbersOnly = True
       TabOrder = 2
       Text = '10'
+    end
+    object CopyButton: TButton
+      Left = 119
+      Top = 75
+      Width = 90
+      Height = 30
+      Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
+      TabOrder = 3
     end
   end
 end

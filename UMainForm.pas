@@ -14,6 +14,7 @@ type
     RangeEdit: TEdit;
     ResultLabel: TLabel;
     RangeLabel: TLabel;
+    CopyButton: TButton;
     procedure GenerateButtonClick(Sender: TObject);
   private
     { Private declarations }
