@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = #1043#1077#1085#1077#1088#1072#1090#1086#1088
-  ClientHeight = 115
-  ClientWidth = 246
+  ClientHeight = 120
+  ClientWidth = 249
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -24,14 +24,14 @@ object MainForm: TMainForm
       Left = 16
       Top = 21
       Width = 57
-      Height = 21
+      Height = 13
       Caption = #1056#1077#1079#1091#1083#1100#1090#1072#1090':'
     end
     object RangeLabel: TLabel
       Left = 16
       Top = 48
-      Width = 57
-      Height = 21
+      Width = 52
+      Height = 13
       Caption = #1047#1072#1090#1088#1072#1074#1082#1072':'
     end
     object OutputEdit: TEdit
@@ -69,6 +69,7 @@ object MainForm: TMainForm
       Height = 30
       Caption = #1050#1086#1087#1080#1088#1086#1074#1072#1090#1100
       TabOrder = 3
+      OnClick = CopyButtonClick
     end
   end
 end
