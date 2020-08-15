@@ -2,9 +2,21 @@ unit UMainForm;
 
 interface
 
+{$REGION 'USES'}
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  System.SysUtils,
+  System.Variants,
+  System.Classes,
+  Winapi.Windows,
+  Winapi.Messages,
+  Vcl.Graphics,
+  Vcl.Controls,
+  Vcl.Forms,
+  Vcl.Dialogs,
+  Vcl.StdCtrls,
+  uConfig;
+{$ENDREGION 'U
+SES'}
 
 type
   TMainForm = class(TForm)
@@ -17,14 +29,13 @@ type
     CopyButton: TButton;
     procedure GenerateButtonClick(Sender: TObject);
     procedure CopyButtonClick(Sender: TObject);
-  private
-    { Private declarations }
-  public
-    { Public declarations }
-  end;
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormResize(Sender: TObject);
 
-Const
-  DEFAULT_GENERATION_RANGE = 100;
+  private
+    fConfig: TConfig;
+  end;
 
 var
   MainForm: TMainForm;
@@ -33,43 +44,64 @@ implementation
 
 {$R *.dfm}
 
+uses
+  Vcl.Clipbrd,
+  uGenerator;
+
+
+
+{$REGION 'TMainForm'}
+
 procedure TMainForm.CopyButtonClick(Sender: TObject);
-Var
+var
   str : String;
-  Value : Integer;
 begin
   str := OutputEdit.Text;
   if Str <> '' then
-    Value := StrToInt(str);
+  begin
+    Clipboard.AsText := str;
+    ShowMessage('Результат скопирован в буфер обмена!');
+  end;
+end;
 
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  fConfig := TCOnfig.Create(ExtractFileDir(Application.ExeName) + Name + '.ini');
+  RangeEdit.Text := fConfig.LastRange.ToString;
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  FreeAndNil(fConfig);
+end;
+
+procedure TMainForm.FormResize(Sender: TObject);
+const
+  MinClientWidth = 256;
+  MinClientHeight = 120;
+begin
+  if ClientWidth < MinClientWidth then
+    ClientWidth := MinClientWidth;
+  if ClientHeight < MinClientHeight then
+    ClientHeight := MinClientHeight;
 end;
 
 procedure TMainForm.GenerateButtonClick(Sender: TObject);
-Var
-  Value : Extended;
-  Range : Integer;
-
-  Function IsCorrectStringValue(const str : String): Boolean;
-  Begin
-    Result:= False;
-  End;
-
-  Function MakeInt(const AValue : Extended) : Integer;
-  Begin
-    Result := Trunc(Value);
-  End;
-
+var
+  Range: Integer;
 begin
-  Value := 0;
-  Range := StrToInt(RangeEdit.Text);
+  Range := string(RangeEdit.Text).ToInteger;
   if Range = 0 then
-  Begin
-    RangeEdit.Text := IntToStr(DEFAULT_GENERATION_RANGE);
-    Range := DEFAULT_GENERATION_RANGE;
-  End;
-  Randomize;
-  Value := Random(Range) + 1;
-  OutputEdit.Text:= IntToStr(MakeInt(Value));
+  begin
+    RangeEdit.Text := fConfig.LastRange.ToString;
+    Range := fConfig.LastRange;
+  end
+  else
+    fConfig.LastRange := Range;
+
+  OutputEdit.Text := Generate(Range, 0).ToString()
 end;
+
+{$ENDREGION 'TMainForm'}
 
 end.
